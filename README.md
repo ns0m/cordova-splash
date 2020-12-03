@@ -1,3 +1,10 @@
+### Fork of the [AlexDisler/cordova-splash](https://github.com/AlexDisler/cordova-splash) package with some fixes. [![Latest Published Version](https://img.shields.io/npm/v/@ns0m/cordova-splash)](https://www.npmjs.com/package/@ns0m/cordova-splash)
+```
+npm install @ns0m/cordova-splash
+```
+
+---
+
 # cordova-splash
 
 Automatic splash screen generator for Cordova. Create a splash screen once in the root folder of your Cordova project and use cordova-splash to automatically crop and copy it for all the platforms your project supports (currenty works with iOS, Android and Windows 10).
@@ -14,7 +21,7 @@ If you are using an older version of cordova (before 7.x):
 
 ### Requirements
 
-- ImageMagick installed (*Mac*: `brew install imagemagick`, *Debian/Ubuntu*: `sudo apt-get install imagemagick`, *Windows*: [See here, install "Legacy tools"](http://www.imagemagick.org/script/binary-releases.php#windows))
+- ImageMagick installed (*Mac*: `brew install imagemagick`, *Debian/Ubuntu*: `sudo apt-get install imagemagick`, *Windows*: [download and install with "Legacy tools"](https://imagemagick.org/script/download.php#windows))
 - At least one platform was added to your project ([cordova platforms docs](http://cordova.apache.org/docs/en/edge/guide_platforms_index.md.html#Platform%20Guides))
 - Cordova's config.xml file must exist in the root folder ([cordova config.xml docs](http://cordova.apache.org/docs/en/edge/config_ref_index.md.html#The%20config.xml%20File))
 
