@@ -1,3 +1,10 @@
+### Fork of the [AlexDisler/cordova-splash](https://github.com/AlexDisler/cordova-splash) package with some fixes. [![Latest Published Version](https://img.shields.io/npm/v/@ns0m/cordova-splash)](https://www.npmjs.com/package/@ns0m/cordova-splash)
+```
+npm install @ns0m/cordova-splash
+```
+
+---
+
 # cordova-splash
 
 Automatic splash screen generator for Cordova. Create a splash screen once in the root folder of your Cordova project and use cordova-splash to automatically crop and copy it for all the platforms your project supports (currenty works with iOS, Android and Windows 10).
