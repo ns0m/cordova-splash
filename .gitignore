@@ -1,5 +1,6 @@
 # Webstorm config
-/.idea
+.idea
+*.iml
 
 # Logs
 logs
