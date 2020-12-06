@@ -35,9 +35,13 @@ You also can specify manually a location for your `config.xml` or `splash.png`:
 
     $ cordova-splash --config=config.xml --splash=splash.png
 
-If you run a old version of Cordova for iOS and you need your files in `/Resources/icons/`, use this option:
+If you run an old version of Cordova for iOS and you need your files in `/Resources/icons/`, use this option:
 
     $ cordova-splash --xcode-old
+
+If you run an old version of Cordova for Android and you need your files in `/res/`, use this option:
+
+    $ cordova-splash --android-old
 
 #### Notes:
 
