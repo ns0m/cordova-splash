@@ -60,7 +60,7 @@ var getPlatforms = function (projectName) {
   platforms.push({
     name : 'android',
     isAdded : fs.existsSync('platforms/android'),
-    splashPath :  settings.OLD_ANDROID_PATH  ?  'platforms/android/res/' : 'platforms/android/app/src/main/res/',
+    splashPath : settings.OLD_ANDROID_PATH ? 'platforms/android/res/' : 'platforms/android/app/src/main/res/',
     splash : [
       // Landscape
       { name: 'drawable-land-ldpi/screen.png',  width: 320,  height: 200  },
@@ -136,7 +136,7 @@ var getProjectName = function () {
         deferred.reject(err);
       }
       var projectName = result.widget.name[0];
-      if (typeof projectName == "object") {
+      if (typeof projectName === 'object') {
          projectName = projectName._.trim()
       }
       deferred.resolve(projectName);
