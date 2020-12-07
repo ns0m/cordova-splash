@@ -288,18 +288,22 @@ var configFileExists = function () {
   return deferred.promise;
 };
 
-display.header('Checking Project & Splash');
+function run() {
+  display.header('Checking Project & Splash');
 
-atLeastOnePlatformFound()
-.then(validSplashExists)
-.then(configFileExists)
-.then(getProjectName)
-.then(getPlatforms)
-.then(generateSplashes)
-.catch(function (err) {
-  if (err) {
-    console.log(err);
-  }
-}).then(function () {
-  console.log('');
-});
+  return atLeastOnePlatformFound()
+    .then(validSplashExists)
+    .then(configFileExists)
+    .then(getProjectName)
+    .then(getPlatforms)
+    .then(generateSplashes)
+    .catch(function (err) {
+      if (err) {
+        console.log(err);
+      }
+    }).then(function () {
+      console.log('');
+    });
+}
+
+module.exports = run;
