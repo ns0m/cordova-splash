@@ -10,11 +10,24 @@ var argv   = require('minimist')(process.argv.slice(2));
 /**
  * @var {Object} settings - names of the config file and of the splash image
  */
-var settings = {};
-settings.CONFIG_FILE = argv.config || 'config.xml';
-settings.SPLASH_FILE = argv.splash || 'splash.png';
-settings.OLD_XCODE_PATH = argv['xcode-old'] || false;
-settings.OLD_ANDROID_PATH = argv['android-old'] || false;
+var settings = {
+  CONFIG_FILE: 'config.xml',
+  SPLASH_FILE: 'splash.png',
+  OLD_XCODE_PATH: false,
+  OLD_ANDROID_PATH: false
+};
+
+/**
+ * Init settings from options or argv
+ *
+ * @param {Object} options
+ */
+var initSettings = function (options = {}) {
+  settings.CONFIG_FILE = options.config || argv.config || settings.CONFIG_FILE;
+  settings.SPLASH_FILE = options.splash || argv.splash || settings.SPLASH_FILE;
+  settings.OLD_XCODE_PATH = options['xcode-old'] || argv['xcode-old'] || settings.OLD_XCODE_PATH;
+  settings.OLD_ANDROID_PATH = options['android-old'] || argv['android-old'] || settings.OLD_ANDROID_PATH;
+};
 
 /**
  * Check which platforms are added to the project and return their splash screen names and sizes
@@ -288,9 +301,9 @@ var configFileExists = function () {
   return deferred.promise;
 };
 
-function run() {
+function run(options) {
   display.header('Checking Project & Splash');
-
+  initSettings(options);
   return atLeastOnePlatformFound()
     .then(validSplashExists)
     .then(configFileExists)
