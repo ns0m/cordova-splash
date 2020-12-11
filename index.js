@@ -137,7 +137,7 @@ var getProjectName = function () {
       }
       var projectName = result.widget.name[0];
       if (typeof projectName === 'object') {
-         projectName = projectName._.trim()
+        projectName = projectName._.trim();
       }
       deferred.resolve(projectName);
     });
