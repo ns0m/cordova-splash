@@ -45,11 +45,10 @@ var getPlatforms = function (projectName) {
   }
 
   platforms.push({
-    name : 'ios',
-    // TODO: use async fs.exists
-    isAdded : fs.existsSync('platforms/ios'),
-    splashPath : 'platforms/ios/' + projectName + xcodeFolder,
-    splash : [
+    name: 'ios',
+    isAdded: fs.existsSync('platforms/ios'),
+    splashPath: 'platforms/ios/' + projectName + xcodeFolder,
+    splash: [
       // iPhone
       { name: 'Default~iphone.png',            width: 320,  height: 480  },
       { name: 'Default@2x~iphone.png',         width: 640,  height: 960  },
@@ -61,8 +60,8 @@ var getPlatforms = function (projectName) {
       { name: 'Default-Landscape-2436h.png',   width: 2436, height: 1125 },
       { name: 'Default-2688h.png',             width: 1242, height: 2688 },
       { name: 'Default-Landscape-2688h.png',   width: 2688, height: 1242 },
-      { name: 'Default-1792h.png',             width: 828, height: 1792 },
-      { name: 'Default-Landscape-1792h.png',   width: 1792, height: 828 },
+      { name: 'Default-1792h.png',             width: 828,  height: 1792 },
+      { name: 'Default-Landscape-1792h.png',   width: 1792, height: 828  },
       // iPad
       { name: 'Default-Portrait~ipad.png',     width: 768,  height: 1024 },
       { name: 'Default-Portrait@2x~ipad.png',  width: 1536, height: 2048 },
@@ -71,42 +70,42 @@ var getPlatforms = function (projectName) {
     ]
   });
   platforms.push({
-    name : 'android',
-    isAdded : fs.existsSync('platforms/android'),
-    splashPath : settings.OLD_ANDROID_PATH ? 'platforms/android/res/' : 'platforms/android/app/src/main/res/',
-    splash : [
+    name: 'android',
+    isAdded: fs.existsSync('platforms/android'),
+    splashPath: settings.OLD_ANDROID_PATH ? 'platforms/android/res/' : 'platforms/android/app/src/main/res/',
+    splash: [
       // Landscape
-      { name: 'drawable-land-ldpi/screen.png',  width: 320,  height: 200  },
-      { name: 'drawable-land-mdpi/screen.png',  width: 480,  height: 320  },
-      { name: 'drawable-land-hdpi/screen.png',  width: 800,  height: 480  },
-      { name: 'drawable-land-xhdpi/screen.png', width: 1280, height: 720  },
-      { name: 'drawable-land-xxhdpi/screen.png', width: 1600, height: 960  },
-      { name: 'drawable-land-xxxhdpi/screen.png', width: 1920, height: 1280  },
+      { name: 'drawable-land-ldpi/screen.png',    width: 320,  height: 200  },
+      { name: 'drawable-land-mdpi/screen.png',    width: 480,  height: 320  },
+      { name: 'drawable-land-hdpi/screen.png',    width: 800,  height: 480  },
+      { name: 'drawable-land-xhdpi/screen.png',   width: 1280, height: 720  },
+      { name: 'drawable-land-xxhdpi/screen.png',  width: 1600, height: 960  },
+      { name: 'drawable-land-xxxhdpi/screen.png', width: 1920, height: 1280 },
       // Portrait
-      { name: 'drawable-port-ldpi/screen.png',  width: 200,  height: 320  },
-      { name: 'drawable-port-mdpi/screen.png',  width: 320,  height: 480  },
-      { name: 'drawable-port-hdpi/screen.png',  width: 480,  height: 800  },
-      { name: 'drawable-port-xhdpi/screen.png', width: 720,  height: 1280 },
-      { name: 'drawable-port-xxhdpi/screen.png', width: 960, height: 1600  },
-      { name: 'drawable-port-xxxhdpi/screen.png', width: 1280, height: 1920  }
+      { name: 'drawable-port-ldpi/screen.png',    width: 200,  height: 320  },
+      { name: 'drawable-port-mdpi/screen.png',    width: 320,  height: 480  },
+      { name: 'drawable-port-hdpi/screen.png',    width: 480,  height: 800  },
+      { name: 'drawable-port-xhdpi/screen.png',   width: 720,  height: 1280 },
+      { name: 'drawable-port-xxhdpi/screen.png',  width: 960,  height: 1600 },
+      { name: 'drawable-port-xxxhdpi/screen.png', width: 1280, height: 1920 }
     ]
   });
   platforms.push({
-    name : 'windows',
-    isAdded : fs.existsSync('platforms/windows'),
-    splashPath : 'platforms/windows/images/',
-    splash : [
+    name: 'windows',
+    isAdded: fs.existsSync('platforms/windows'),
+    splashPath: 'platforms/windows/images/',
+    splash: [
       // Landscape
       { name: 'SplashScreen.scale-100.png', width: 620,  height: 300  },
       { name: 'SplashScreen.scale-125.png', width: 775,  height: 375  },
       { name: 'SplashScreen.scale-140.png', width: 868,  height: 420  },
       { name: 'SplashScreen.scale-150.png', width: 930,  height: 450  },
-      { name: 'SplashScreen.scale-180.png', width: 1116,  height: 540  },
+      { name: 'SplashScreen.scale-180.png', width: 1116, height: 540  },
       { name: 'SplashScreen.scale-200.png', width: 1240, height: 600  },
       { name: 'SplashScreen.scale-400.png', width: 2480, height: 1200 },
       // Portrait
-      { name: 'SplashScreenPhone.scale-240.png', width: 1152,  height: 1920  },
-      { name: 'SplashScreenPhone.scale-140.png', width: 672,  height: 1120  },
+      { name: 'SplashScreenPhone.scale-240.png', width: 1152, height: 1920 },
+      { name: 'SplashScreenPhone.scale-140.png', width: 672,  height: 1120 },
       { name: 'SplashScreenPhone.scale-100.png', width: 480,  height: 800  }
     ]
   });
@@ -227,7 +226,7 @@ var generateSplashes = function (platforms) {
   var deferred = Q.defer();
   var sequence = Q();
   var all = [];
-  _(platforms).where({ isAdded : true }).forEach(function (platform) {
+  _(platforms).where({ isAdded: true }).forEach(function (platform) {
     sequence = sequence.then(function () {
       return generateSplashForPlatform(platform);
     });
@@ -247,7 +246,7 @@ var generateSplashes = function (platforms) {
 var atLeastOnePlatformFound = function () {
   var deferred = Q.defer();
   getPlatforms().then(function (platforms) {
-    var activePlatforms = _(platforms).where({ isAdded : true });
+    var activePlatforms = _(platforms).where({ isAdded: true });
     if (activePlatforms.length > 0) {
       display.success('platforms found: ' + _(activePlatforms).pluck('name').join(', '));
       deferred.resolve();
