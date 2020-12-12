@@ -38,16 +38,22 @@ var initSettings = function (options = {}) {
 var getPlatforms = function (projectName) {
   var deferred = Q.defer();
   var platforms = [];
-  var xcodeFolder = '/Images.xcassets/LaunchImage.launchimage/';
+  var cordovaProjectRoot = path.dirname(settings.CONFIG_FILE);
+  var xcodeFolder = 'Images.xcassets/LaunchImage.launchimage';
+  var androidFolder = 'app/src/main/res';
+  var windowsFolder = 'images';
 
   if (settings.OLD_XCODE_PATH) {
-    xcodeFolder = '/Resources/splash/';
+    xcodeFolder = 'Resources/splash';
+  }
+  if (settings.OLD_ANDROID_PATH) {
+    androidFolder = 'res';
   }
 
   platforms.push({
     name: 'ios',
-    isAdded: fs.existsSync('platforms/ios'),
-    splashPath: 'platforms/ios/' + projectName + xcodeFolder,
+    isAdded: fs.existsSync(path.join(cordovaProjectRoot, 'platforms/ios')),
+    splashPath: path.join(cordovaProjectRoot, 'platforms/ios', projectName, xcodeFolder),
     splash: [
       // iPhone
       { name: 'Default~iphone.png',            width: 320,  height: 480  },
@@ -71,8 +77,8 @@ var getPlatforms = function (projectName) {
   });
   platforms.push({
     name: 'android',
-    isAdded: fs.existsSync('platforms/android'),
-    splashPath: settings.OLD_ANDROID_PATH ? 'platforms/android/res/' : 'platforms/android/app/src/main/res/',
+    isAdded: fs.existsSync(path.join(cordovaProjectRoot, 'platforms/android')),
+    splashPath: path.join(cordovaProjectRoot, 'platforms/android', androidFolder),
     splash: [
       // Landscape
       { name: 'drawable-land-ldpi/screen.png',    width: 320,  height: 200  },
@@ -92,8 +98,8 @@ var getPlatforms = function (projectName) {
   });
   platforms.push({
     name: 'windows',
-    isAdded: fs.existsSync('platforms/windows'),
-    splashPath: 'platforms/windows/images/',
+    isAdded: fs.existsSync(path.join(cordovaProjectRoot, 'platforms/windows')),
+    splashPath: path.join(cordovaProjectRoot, 'platforms/windows', windowsFolder),
     splash: [
       // Landscape
       { name: 'SplashScreen.scale-100.png', width: 620,  height: 300  },
@@ -171,7 +177,7 @@ var generateSplash = function (platform, splash) {
   if (fs.existsSync(platformPath)) {
     srcPath = platformPath;
   }
-  var dstPath = platform.splashPath + splash.name;
+  var dstPath = path.join(platform.splashPath, splash.name);
   var dst = path.dirname(dstPath);
   if (!fs.existsSync(dst)) {
     fs.mkdirsSync(dst);
