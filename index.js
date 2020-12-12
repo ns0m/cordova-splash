@@ -187,8 +187,8 @@ var generateSplash = function (platform, splash) {
     if (err) {
       deferred.reject(err);
     } else {
-      deferred.resolve();
       display.success(splash.name + ' created');
+      deferred.resolve();
     }
   });
   return deferred.promise;
