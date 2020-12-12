@@ -217,7 +217,7 @@ var generateSplashForPlatform = function (platform) {
 };
 
 /**
- * Go over all the platforms and trigger splash screen generation
+ * Go over the platforms and trigger splash screen generation
  *
  * @param  {Array} platforms
  * @return {Promise}
@@ -226,7 +226,7 @@ var generateSplashes = function (platforms) {
   var deferred = Q.defer();
   var sequence = Q();
   var all = [];
-  _(platforms).where({ isAdded: true }).forEach(function (platform) {
+  platforms.forEach(function (platform) {
     sequence = sequence.then(function () {
       return generateSplashForPlatform(platform);
     });
@@ -241,24 +241,23 @@ var generateSplashes = function (platforms) {
 /**
  * Check if at least one platform was added to the project
  *
- * @return {Promise} resolves if at least one platform was found, rejects otherwise
+ * @param  {Array} platforms
+ * @return {Promise} resolves with the array of active platforms, rejects otherwise
  */
-var atLeastOnePlatformFound = function () {
+var filterActivePlatforms = function (platforms) {
   var deferred = Q.defer();
-  getPlatforms().then(function (platforms) {
-    var activePlatforms = _(platforms).where({ isAdded: true });
-    if (activePlatforms.length > 0) {
-      display.success('platforms found: ' + _(activePlatforms).pluck('name').join(', '));
-      deferred.resolve();
-    } else {
-      display.error(
-        'No cordova platforms found. ' +
-        'Make sure you are in the root folder of your Cordova project ' +
-        'and add platforms with \'cordova platform add\''
-      );
-      deferred.reject();
-    }
-  });
+  var activePlatforms = _(platforms).where({ isAdded: true });
+  if (activePlatforms.length > 0) {
+    display.success('platforms found: ' + _(activePlatforms).pluck('name').join(', '));
+    deferred.resolve(activePlatforms);
+  } else {
+    display.error(
+      'No cordova platforms found. ' +
+      'Make sure you are in the root folder of your Cordova project ' +
+      'and add platforms with \'cordova platform add\''
+    );
+    deferred.reject();
+  }
   return deferred.promise;
 };
 
@@ -303,11 +302,11 @@ var configFileExists = function () {
 function run(options) {
   display.header('Checking Project & Splash');
   initSettings(options);
-  return atLeastOnePlatformFound()
+  return configFileExists()
     .then(validSplashExists)
-    .then(configFileExists)
     .then(getProjectName)
     .then(getPlatforms)
+    .then(filterActivePlatforms)
     .then(generateSplashes)
     .catch(function (err) {
       if (err) {
