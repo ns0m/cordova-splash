@@ -132,7 +132,7 @@ display.header = function (str) {
 };
 
 /**
- * read the config file and get the project name
+ * Read the config file and get the project name
  *
  * @return {Promise} resolves to a string - the project's name
  */
@@ -158,7 +158,7 @@ var getProjectName = function () {
 };
 
 /**
- * Crops and creates a new splash in the platform's folder.
+ * Crop and create a new splash in the platform's folder.
  *
  * @param  {Object} platform
  * @param  {Object} splash
@@ -195,7 +195,7 @@ var generateSplash = function (platform, splash) {
 };
 
 /**
- * Generates splash based on the platform object
+ * Generate splash based on the platform object
  *
  * @param  {Object} platform
  * @return {Promise}
@@ -217,7 +217,7 @@ var generateSplashForPlatform = function (platform) {
 };
 
 /**
- * Goes over all the platforms and triggers splash screen generation
+ * Go over all the platforms and trigger splash screen generation
  *
  * @param  {Array} platforms
  * @return {Promise}
@@ -239,7 +239,7 @@ var generateSplashes = function (platforms) {
 };
 
 /**
- * Checks if at least one platform was added to the project
+ * Check if at least one platform was added to the project
  *
  * @return {Promise} resolves if at least one platform was found, rejects otherwise
  */
@@ -263,7 +263,7 @@ var atLeastOnePlatformFound = function () {
 };
 
 /**
- * Checks if a valid splash file exists
+ * Check if a valid splash file exists
  *
  * @return {Promise} resolves if exists, rejects otherwise
  */
@@ -282,7 +282,7 @@ var validSplashExists = function () {
 };
 
 /**
- * Checks if a config.xml file exists
+ * Check if a config.xml file exists
  *
  * @return {Promise} resolves if exists, rejects otherwise
  */
