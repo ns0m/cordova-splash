@@ -54,7 +54,7 @@ var getPlatforms = function (projectName) {
     name: 'ios',
     isAdded: fs.existsSync(path.join(cordovaProjectRoot, 'platforms/ios')),
     splashPath: path.join(cordovaProjectRoot, 'platforms/ios', projectName, xcodeFolder),
-    splash: [
+    splashes: [
       // iPhone
       { name: 'Default~iphone.png',            width: 320,  height: 480  },
       { name: 'Default@2x~iphone.png',         width: 640,  height: 960  },
@@ -79,7 +79,7 @@ var getPlatforms = function (projectName) {
     name: 'android',
     isAdded: fs.existsSync(path.join(cordovaProjectRoot, 'platforms/android')),
     splashPath: path.join(cordovaProjectRoot, 'platforms/android', androidFolder),
-    splash: [
+    splashes: [
       // Landscape
       { name: 'drawable-land-ldpi/screen.png',    width: 320,  height: 200  },
       { name: 'drawable-land-mdpi/screen.png',    width: 480,  height: 320  },
@@ -100,7 +100,7 @@ var getPlatforms = function (projectName) {
     name: 'windows',
     isAdded: fs.existsSync(path.join(cordovaProjectRoot, 'platforms/windows')),
     splashPath: path.join(cordovaProjectRoot, 'platforms/windows', windowsFolder),
-    splash: [
+    splashes: [
       // Landscape
       { name: 'SplashScreen.scale-100.png', width: 620,  height: 300  },
       { name: 'SplashScreen.scale-125.png', width: 775,  height: 375  },
@@ -210,8 +210,7 @@ var generateSplashForPlatform = function (platform) {
   var deferred = Q.defer();
   display.header('Generating splash screen for ' + platform.name);
   var all = [];
-  var splashes = platform.splash;
-  splashes.forEach(function (splash) {
+  platform.splashes.forEach(function (splash) {
     all.push(generateSplash(platform, splash));
   });
   Q.all(all).then(function () {
