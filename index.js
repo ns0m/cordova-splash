@@ -38,6 +38,7 @@ var getPlatforms = function () {
   var platforms = [];
   var cordovaProjectRoot = path.dirname(settings.CONFIG_FILE);
   var xcodeFolder = 'Images.xcassets/LaunchImage.launchimage';
+  var xcodeStoryboardFolder = 'Images.xcassets/LaunchStoryboard.imageset';
   var androidFolder = 'app/src/main/res';
   var windowsFolder = 'images';
 
@@ -70,6 +71,13 @@ var getPlatforms = function () {
       { name: 'Default-Portrait@2x~ipad.png',  width: 1536, height: 2048 },
       { name: 'Default-Landscape~ipad.png',    width: 1024, height: 768  },
       { name: 'Default-Landscape@2x~ipad.png', width: 2048, height: 1536 }
+    ]
+  });
+  platforms.push({
+    name: 'ios-storyboard',
+    splashPattern: path.join(cordovaProjectRoot, 'platforms/ios', '*', xcodeStoryboardFolder),
+    splashes: [
+      { name: 'Default@2x~universal~anyany.png', width: 2732, height: 2732 }
     ]
   });
   platforms.push({
