@@ -1,9 +1,8 @@
 var fs     = require('fs-extra');
 var path   = require('path');
-var xml2js = require('xml2js');
+var glob   = require('glob');
 var ig     = require('imagemagick');
 var colors = require('colors');
-var _      = require('underscore');
 var Q      = require('q');
 var argv   = require('minimist')(process.argv.slice(2));
 
@@ -30,12 +29,11 @@ var initSettings = function (options = {}) {
 };
 
 /**
- * Check which platforms are added to the project and return their splash screen names and sizes
+ * Return known platforms with their splash screen names and sizes
  *
- * @param  {String} projectName
  * @return {Promise} resolves with an array of platforms
  */
-var getPlatforms = function (projectName) {
+var getPlatforms = function () {
   var deferred = Q.defer();
   var platforms = [];
   var cordovaProjectRoot = path.dirname(settings.CONFIG_FILE);
@@ -52,8 +50,7 @@ var getPlatforms = function (projectName) {
 
   platforms.push({
     name: 'ios',
-    isAdded: fs.existsSync(path.join(cordovaProjectRoot, 'platforms/ios')),
-    splashPath: path.join(cordovaProjectRoot, 'platforms/ios', projectName, xcodeFolder),
+    splashPattern: path.join(cordovaProjectRoot, 'platforms/ios', '*', xcodeFolder),
     splashes: [
       // iPhone
       { name: 'Default~iphone.png',            width: 320,  height: 480  },
@@ -77,8 +74,7 @@ var getPlatforms = function (projectName) {
   });
   platforms.push({
     name: 'android',
-    isAdded: fs.existsSync(path.join(cordovaProjectRoot, 'platforms/android')),
-    splashPath: path.join(cordovaProjectRoot, 'platforms/android', androidFolder),
+    splashPattern: path.join(cordovaProjectRoot, 'platforms/android', androidFolder),
     splashes: [
       // Landscape
       { name: 'drawable-land-ldpi/screen.png',    width: 320,  height: 200  },
@@ -98,8 +94,7 @@ var getPlatforms = function (projectName) {
   });
   platforms.push({
     name: 'windows',
-    isAdded: fs.existsSync(path.join(cordovaProjectRoot, 'platforms/windows')),
-    splashPath: path.join(cordovaProjectRoot, 'platforms/windows', windowsFolder),
+    splashPattern: path.join(cordovaProjectRoot, 'platforms/windows', windowsFolder),
     splashes: [
       // Landscape
       { name: 'SplashScreen.scale-100.png', width: 620,  height: 300  },
@@ -135,32 +130,6 @@ display.header = function (str) {
   console.log('');
   console.log(' ' + str.cyan.underline);
   console.log('');
-};
-
-/**
- * Read the config file and get the project name
- *
- * @return {Promise} resolves to a string - the project's name
- */
-var getProjectName = function () {
-  var deferred = Q.defer();
-  var parser = new xml2js.Parser();
-  fs.readFile(settings.CONFIG_FILE, function (err, data) {
-    if (err) {
-      deferred.reject(err);
-    }
-    parser.parseString(data, function (err, result) {
-      if (err) {
-        deferred.reject(err);
-      }
-      var projectName = result.widget.name[0];
-      if (typeof projectName === 'object') {
-        projectName = projectName._.trim();
-      }
-      deferred.resolve(projectName);
-    });
-  });
-  return deferred.promise;
 };
 
 /**
@@ -244,16 +213,23 @@ var generateSplashes = function (platforms) {
 };
 
 /**
- * Check if at least one platform was added to the project
+ * Filter and transform platforms that are really added to the project
  *
  * @param  {Array} platforms
  * @return {Promise} resolves with the array of active platforms, rejects otherwise
  */
-var filterActivePlatforms = function (platforms) {
+var asActivePlatforms = function (platforms) {
   var deferred = Q.defer();
-  var activePlatforms = _(platforms).where({ isAdded: true });
+  var activePlatforms = [];
+  platforms.forEach(function (platform) {
+    var splashPath = glob.sync(platform.splashPattern).shift();
+    if (splashPath) {
+      platform.splashPath = splashPath;
+      activePlatforms.push(platform);
+    }
+  });
   if (activePlatforms.length > 0) {
-    display.success('platforms found: ' + _(activePlatforms).pluck('name').join(', '));
+    display.success('platforms found: ' + activePlatforms.map(function (platform) { return platform.name; }).join(', '));
     deferred.resolve(activePlatforms);
   } else {
     display.error(
@@ -309,9 +285,8 @@ function run(options) {
   initSettings(options);
   return configFileExists()
     .then(validSplashExists)
-    .then(getProjectName)
     .then(getPlatforms)
-    .then(filterActivePlatforms)
+    .then(asActivePlatforms)
     .then(generateSplashes)
     .catch(function (err) {
       if (err) {
