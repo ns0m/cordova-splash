@@ -38,17 +38,23 @@ var initSettings = function (options = {}) {
 var getPlatforms = function (projectName) {
   var deferred = Q.defer();
   var platforms = [];
-  var xcodeFolder = '/Images.xcassets/LaunchImage.launchimage/';
+  var cordovaProjectRoot = path.dirname(settings.CONFIG_FILE);
+  var xcodeFolder = 'Images.xcassets/LaunchImage.launchimage';
+  var androidFolder = 'app/src/main/res';
+  var windowsFolder = 'images';
 
   if (settings.OLD_XCODE_PATH) {
-    xcodeFolder = '/Resources/splash/';
+    xcodeFolder = 'Resources/splash';
+  }
+  if (settings.OLD_ANDROID_PATH) {
+    androidFolder = 'res';
   }
 
   platforms.push({
     name: 'ios',
-    isAdded: fs.existsSync('platforms/ios'),
-    splashPath: 'platforms/ios/' + projectName + xcodeFolder,
-    splash: [
+    isAdded: fs.existsSync(path.join(cordovaProjectRoot, 'platforms/ios')),
+    splashPath: path.join(cordovaProjectRoot, 'platforms/ios', projectName, xcodeFolder),
+    splashes: [
       // iPhone
       { name: 'Default~iphone.png',            width: 320,  height: 480  },
       { name: 'Default@2x~iphone.png',         width: 640,  height: 960  },
@@ -71,9 +77,9 @@ var getPlatforms = function (projectName) {
   });
   platforms.push({
     name: 'android',
-    isAdded: fs.existsSync('platforms/android'),
-    splashPath: settings.OLD_ANDROID_PATH ? 'platforms/android/res/' : 'platforms/android/app/src/main/res/',
-    splash: [
+    isAdded: fs.existsSync(path.join(cordovaProjectRoot, 'platforms/android')),
+    splashPath: path.join(cordovaProjectRoot, 'platforms/android', androidFolder),
+    splashes: [
       // Landscape
       { name: 'drawable-land-ldpi/screen.png',    width: 320,  height: 200  },
       { name: 'drawable-land-mdpi/screen.png',    width: 480,  height: 320  },
@@ -92,9 +98,9 @@ var getPlatforms = function (projectName) {
   });
   platforms.push({
     name: 'windows',
-    isAdded: fs.existsSync('platforms/windows'),
-    splashPath: 'platforms/windows/images/',
-    splash: [
+    isAdded: fs.existsSync(path.join(cordovaProjectRoot, 'platforms/windows')),
+    splashPath: path.join(cordovaProjectRoot, 'platforms/windows', windowsFolder),
+    splashes: [
       // Landscape
       { name: 'SplashScreen.scale-100.png', width: 620,  height: 300  },
       { name: 'SplashScreen.scale-125.png', width: 775,  height: 375  },
@@ -171,7 +177,7 @@ var generateSplash = function (platform, splash) {
   if (fs.existsSync(platformPath)) {
     srcPath = platformPath;
   }
-  var dstPath = platform.splashPath + splash.name;
+  var dstPath = path.join(platform.splashPath, splash.name);
   var dst = path.dirname(dstPath);
   if (!fs.existsSync(dst)) {
     fs.mkdirsSync(dst);
@@ -204,8 +210,7 @@ var generateSplashForPlatform = function (platform) {
   var deferred = Q.defer();
   display.header('Generating splash screen for ' + platform.name);
   var all = [];
-  var splashes = platform.splash;
-  splashes.forEach(function (splash) {
+  platform.splashes.forEach(function (splash) {
     all.push(generateSplash(platform, splash));
   });
   Q.all(all).then(function () {
