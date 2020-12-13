@@ -8,7 +8,7 @@ Adding local run, with or without options:
 const cordovaSplash = require('@ns0m/cordova-splash');
 
 await cordovaSplash();
-await cordovaSplash({config: 'custom-config.xml', splash: 'custom-splash.png'});
+await cordovaSplash({config: '/path/to/helloCdv/config.xml', splash: '/path/to/images/splash.png'});
 await cordovaSplash({'xcode-old': true});
 await cordovaSplash({'android-old': true});
 ```
@@ -43,7 +43,7 @@ Create a `splash.png` file in the root folder of your cordova project and run:
 
 You also can specify manually a location for your `config.xml` or `splash.png`:
 
-    $ cordova-splash --config=custom-config.xml --splash=custom-splash.png
+    $ cordova-splash --config=/path/to/helloCdv/config.xml --splash=/path/to/images/splash.png
 
 If you run an old version of Cordova for iOS and you need your files in `/Resources/icons/`, use this option:
 
