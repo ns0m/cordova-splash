@@ -13,7 +13,8 @@ var settings = {
   PROJECT_ROOT: '.',
   SPLASH_FILE: 'splash.png',
   OLD_XCODE_PATH: false,
-  OLD_ANDROID_PATH: false
+  OLD_ANDROID_PATH: false,
+  STORYBOARD_VARIANT: 'single'  /* one of 'device', 'universal', or 'single' (default) */
 };
 
 /**
@@ -26,6 +27,7 @@ var initSettings = function (options = {}) {
   settings.SPLASH_FILE = options.splash || argv.splash || settings.SPLASH_FILE;
   settings.OLD_XCODE_PATH = options['xcode-old'] || argv['xcode-old'] || settings.OLD_XCODE_PATH;
   settings.OLD_ANDROID_PATH = options['android-old'] || argv['android-old'] || settings.OLD_ANDROID_PATH;
+  settings.STORYBOARD_VARIANT = options.storyboard || argv.storyboard || settings.STORYBOARD_VARIANT;
 };
 
 /**
@@ -75,7 +77,27 @@ var getPlatforms = function () {
   platforms.push({
     name: 'ios-storyboard',
     splashPattern: path.join(settings.PROJECT_ROOT, 'platforms/ios', '*', xcodeStoryboardFolder),
-    splashes: [
+    splashes: settings.STORYBOARD_VARIANT === 'device' ? [
+      // iPhone
+      { name: 'Default@2x~iphone~anyany.png', width: 1334, height: 1334 },
+      { name: 'Default@2x~iphone~comany.png', width: 750,  height: 1334 },
+      { name: 'Default@2x~iphone~comcom.png', width: 1334, height: 750  },
+      { name: 'Default@3x~iphone~anyany.png', width: 2208, height: 2208 },
+      { name: 'Default@3x~iphone~anycom.png', width: 2208, height: 1242 },
+      { name: 'Default@3x~iphone~comany.png', width: 1242, height: 2208 },
+      // iPad
+      { name: 'Default@2x~ipad~anyany.png',   width: 2732, height: 2732 },
+      { name: 'Default@2x~ipad~comany.png',   width: 1278, height: 2732 }
+    ] : settings.STORYBOARD_VARIANT === 'universal' ? [
+      // multi-image
+      { name: 'Default@2x~universal~anyany.png', width: 2732, height: 2732 },
+      { name: 'Default@2x~universal~comany.png', width: 1278, height: 2732 },
+      { name: 'Default@2x~universal~comcom.png', width: 1334, height: 750  },
+      { name: 'Default@3x~universal~anyany.png', width: 2208, height: 2208 },
+      { name: 'Default@3x~universal~anycom.png', width: 2208, height: 1242 },
+      { name: 'Default@3x~universal~comany.png', width: 1242, height: 2208 }
+    ] : [
+      // single-image
       { name: 'Default@2x~universal~anyany.png', width: 2732, height: 2732 }
     ]
   });

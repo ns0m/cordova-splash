@@ -11,6 +11,7 @@ await cordovaSplash.generate();
 await cordovaSplash.generate({project: '/path/to/helloCdv/', splash: '/path/to/images/splash.png'});
 await cordovaSplash.generate({'xcode-old': true});
 await cordovaSplash.generate({'android-old': true});
+await cordovaSplash.generate({storyboard: 'device'});   /* one of 'device', 'universal', or 'single' (default) */
 ```
 
 ---
@@ -51,6 +52,10 @@ If you run an old version of Cordova for iOS and you need your files in `/Resour
 If you run an old version of Cordova for Android and you need your files in `/res/`, use this option:
 
     $ cordova-splash --android-old
+
+You can specify manually the variant for iOS [Launch Storyboard](https://github.com/apache/cordova-plugin-splashscreen#ios-specific-information) generation, among `device`, `universal`, or `single` (default):
+
+    $ cordova-splash --storyboard="device"
 
 #### Notes:
 
