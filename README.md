@@ -8,7 +8,7 @@ Adding local run, with or without options:
 const cordovaSplash = require('@ns0m/cordova-splash');
 
 await cordovaSplash.generate();
-await cordovaSplash.generate({config: '/path/to/helloCdv/config.xml', splash: '/path/to/images/splash.png'});
+await cordovaSplash.generate({project: '/path/to/helloCdv/', splash: '/path/to/images/splash.png'});
 await cordovaSplash.generate({'xcode-old': true});
 await cordovaSplash.generate({'android-old': true});
 ```
@@ -17,7 +17,7 @@ await cordovaSplash.generate({'android-old': true});
 
 # cordova-splash
 
-Automatic splash screen generator for Cordova. Create a splash screen once in the root folder of your Cordova project and use cordova-splash to automatically crop and copy it for all the platforms your project supports (currenty works with iOS, Android and Windows 10).
+Automatic splash screen generator for Cordova. Create a splash screen and use _cordova-splash_ to automatically crop and copy it for all the platforms your project supports (currently works with iOS, Android and Windows 10).
 
 The splash screen image should be 2208x2208 px with a center square of about 1200x1200 px. The image may be cropped around the center square. You can also use larger images with similar proportions.
 
@@ -33,7 +33,6 @@ If you are using an older version of cordova (before 7.x):
 
 - ImageMagick installed (*Mac*: `brew install imagemagick`, *Debian/Ubuntu*: `sudo apt-get install imagemagick`, *Windows*: [download and install with "Legacy tools"](https://imagemagick.org/script/download.php#windows))
 - At least one platform was added to your project ([cordova platforms docs](http://cordova.apache.org/docs/en/edge/guide_platforms_index.md.html#Platform%20Guides))
-- Cordova's config.xml file must exist in the root folder ([cordova config.xml docs](http://cordova.apache.org/docs/en/edge/config_ref_index.md.html#The%20config.xml%20File))
 
 ### Usage
 
@@ -41,9 +40,9 @@ Create a `splash.png` file in the root folder of your cordova project and run:
 
     $ cordova-splash
 
-You also can specify manually a location for your `config.xml` or `splash.png`:
+You also can specify manually a location for your cordova project or `splash.png`:
 
-    $ cordova-splash --config=/path/to/helloCdv/config.xml --splash=/path/to/images/splash.png
+    $ cordova-splash --project=/path/to/helloCdv/ --splash=/path/to/images/splash.png
 
 If you run an old version of Cordova for iOS and you need your files in `/Resources/icons/`, use this option:
 
@@ -55,8 +54,8 @@ If you run an old version of Cordova for Android and you need your files in `/re
 
 #### Notes:
 
-- Your `config.ml` file will not be updated by the tool (because images are automatically created in the good folders)
-- Therefore, in your `config.xml`, be sure to remove all lines looking like `<splash src="res/screen/android/splash-land-mdpi.png" density="land-mdpi"/>`
+- Cordova's config.xml file will not be updated by the tool (because images are automatically created in the good folders)
+- Therefore, in Cordova's config.xml file, be sure to remove all lines looking like `<splash src="res/screen/android/splash-land-mdpi.png" density="land-mdpi"/>`
 
 ### Icons
 
