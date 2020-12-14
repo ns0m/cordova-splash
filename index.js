@@ -7,10 +7,10 @@ var Q      = require('q');
 var argv   = require('minimist')(process.argv.slice(2));
 
 /**
- * @var {Object} settings - names of the config file and of the splash image
+ * @var {Object} settings
  */
 var settings = {
-  CONFIG_FILE: 'config.xml',
+  PROJECT_ROOT: '.',
   SPLASH_FILE: 'splash.png',
   OLD_XCODE_PATH: false,
   OLD_ANDROID_PATH: false
@@ -22,7 +22,7 @@ var settings = {
  * @param {Object} options
  */
 var initSettings = function (options = {}) {
-  settings.CONFIG_FILE = options.config || argv.config || settings.CONFIG_FILE;
+  settings.PROJECT_ROOT = options.project || argv.project || settings.PROJECT_ROOT;
   settings.SPLASH_FILE = options.splash || argv.splash || settings.SPLASH_FILE;
   settings.OLD_XCODE_PATH = options['xcode-old'] || argv['xcode-old'] || settings.OLD_XCODE_PATH;
   settings.OLD_ANDROID_PATH = options['android-old'] || argv['android-old'] || settings.OLD_ANDROID_PATH;
@@ -36,7 +36,6 @@ var initSettings = function (options = {}) {
 var getPlatforms = function () {
   var deferred = Q.defer();
   var platforms = [];
-  var cordovaProjectRoot = path.dirname(settings.CONFIG_FILE);
   var xcodeFolder = 'Images.xcassets/LaunchImage.launchimage';
   var xcodeStoryboardFolder = 'Images.xcassets/LaunchStoryboard.imageset';
   var androidFolder = 'app/src/main/res';
@@ -51,7 +50,7 @@ var getPlatforms = function () {
 
   platforms.push({
     name: 'ios',
-    splashPattern: path.join(cordovaProjectRoot, 'platforms/ios', '*', xcodeFolder),
+    splashPattern: path.join(settings.PROJECT_ROOT, 'platforms/ios', '*', xcodeFolder),
     splashes: [
       // iPhone
       { name: 'Default~iphone.png',            width: 320,  height: 480  },
@@ -75,14 +74,14 @@ var getPlatforms = function () {
   });
   platforms.push({
     name: 'ios-storyboard',
-    splashPattern: path.join(cordovaProjectRoot, 'platforms/ios', '*', xcodeStoryboardFolder),
+    splashPattern: path.join(settings.PROJECT_ROOT, 'platforms/ios', '*', xcodeStoryboardFolder),
     splashes: [
       { name: 'Default@2x~universal~anyany.png', width: 2732, height: 2732 }
     ]
   });
   platforms.push({
     name: 'android',
-    splashPattern: path.join(cordovaProjectRoot, 'platforms/android', androidFolder),
+    splashPattern: path.join(settings.PROJECT_ROOT, 'platforms/android', androidFolder),
     splashes: [
       // Landscape
       { name: 'drawable-land-ldpi/screen.png',    width: 320,  height: 200  },
@@ -102,7 +101,7 @@ var getPlatforms = function () {
   });
   platforms.push({
     name: 'windows',
-    splashPattern: path.join(cordovaProjectRoot, 'platforms/windows', windowsFolder),
+    splashPattern: path.join(settings.PROJECT_ROOT, 'platforms/windows', windowsFolder),
     splashes: [
       // Landscape
       { name: 'SplashScreen.scale-100.png', width: 620,  height: 300  },
@@ -269,30 +268,10 @@ var validSplashExists = function () {
   return deferred.promise;
 };
 
-/**
- * Check if a config.xml file exists
- *
- * @return {Promise} resolves if exists, rejects otherwise
- */
-var configFileExists = function () {
-  var deferred = Q.defer();
-  fs.exists(settings.CONFIG_FILE, function (exists) {
-    if (exists) {
-      display.success(settings.CONFIG_FILE + ' exists');
-      deferred.resolve();
-    } else {
-      display.error('cordova\'s ' + settings.CONFIG_FILE + ' does not exist');
-      deferred.reject();
-    }
-  });
-  return deferred.promise;
-};
-
 function generate(options) {
-  display.header('Checking Project & Splash');
+  display.header('Checking Splash & Project');
   initSettings(options);
-  return configFileExists()
-    .then(validSplashExists)
+  return validSplashExists()
     .then(getPlatforms)
     .then(asActivePlatforms)
     .then(generateSplashes)
