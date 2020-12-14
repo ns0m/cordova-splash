@@ -288,7 +288,7 @@ var configFileExists = function () {
   return deferred.promise;
 };
 
-function run(options) {
+function generate(options) {
   display.header('Checking Project & Splash');
   initSettings(options);
   return configFileExists()
@@ -305,4 +305,6 @@ function run(options) {
     });
 }
 
-module.exports = run;
+module.exports = {
+  generate
+};
