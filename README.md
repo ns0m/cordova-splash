@@ -7,11 +7,11 @@ Adding local run, with or without options:
 ```js
 const cordovaSplash = require('@ns0m/cordova-splash');
 
-await cordovaSplash.generate();
-await cordovaSplash.generate({project: '/path/to/helloCdv/', splash: '/path/to/images/splash.png'});
-await cordovaSplash.generate({'xcode-old': true});
-await cordovaSplash.generate({'android-old': true});
-await cordovaSplash.generate({storyboard: 'device'});   /* one of 'device', 'universal', or 'single' (default) */
+await cordovaSplash();
+await cordovaSplash({project: '/path/to/helloCdv/', splash: '/path/to/images/splash.png'});
+await cordovaSplash({'xcode-old': true});
+await cordovaSplash({'android-old': true});
+await cordovaSplash({storyboard: 'device'});   /* one of 'device', 'universal', or 'single' (default) */
 ```
 
 ---

@@ -290,7 +290,7 @@ var validSplashExists = function () {
   return deferred.promise;
 };
 
-function generate(options) {
+function run(options) {
   display.header('Checking Splash & Project');
   initSettings(options);
   return validSplashExists()
@@ -306,6 +306,4 @@ function generate(options) {
     });
 }
 
-module.exports = {
-  generate
-};
+module.exports = run;
